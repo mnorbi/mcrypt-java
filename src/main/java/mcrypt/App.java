@@ -8,6 +8,7 @@ public class App {
         String fileName = "src/test/resources/encrypted.nc";
         byte[] input = Files.readAllBytes(Paths.get(fileName));
         McryptStruct mcryptStruct = McryptStruct.createFrom(input);
+
         System.out.println(mcryptStruct);
     }
 

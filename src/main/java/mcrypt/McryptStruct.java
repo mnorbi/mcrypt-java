@@ -24,7 +24,7 @@ public class McryptStruct {
     }
 
     public static McryptStruct createFrom(byte[] input) {
-        return new McryptStructBuilder().withParser(new Parser(input)).build();
+        return new McryptStructBuilder().fromInput(input).build();
     }
 
     @Override

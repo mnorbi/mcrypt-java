@@ -1,8 +1,6 @@
 package mcrypt;
 
 public class McryptStructBuilder {
-    private Parser parser;
-
     int saltIvFlag;
     String algorithmName;
     int keyLength;
@@ -47,8 +45,8 @@ public class McryptStructBuilder {
         return this;
     }
 
-    public McryptStructBuilder withParser(Parser parser) {
-        this.parser = parser;
+    public McryptStructBuilder fromInput(byte[] input) {
+        Parser parser = new Parser(input);
 
         checkHeader(parser.nextByteArray(3));
 
@@ -59,7 +57,7 @@ public class McryptStructBuilder {
         setKeyGeneratorName(parser.nextString());
 
         if (hasSalt()) {
-            setSalt(parseSalt());
+            setSalt(parseSalt(parser));
         }
 
         setChecksumAlgorithm(parser.nextString());
@@ -89,7 +87,7 @@ public class McryptStructBuilder {
         if (header[2] != 3) throw new IllegalArgumentException();
     }
 
-    private byte[] parseSalt() {
+    private byte[] parseSalt(Parser parser) {
         return parser.nextByteArray(parser.nextByte() -1);
     }
 
