@@ -14,7 +14,7 @@ public class Parser {
 
     public byte[] nextByteArray(int size) {
         byte[] ret = new byte[size];
-        for (byte a = 0; a < size; ++a) {
+        for (int a = 0; a < size; ++a) {
             ret[a] = nextByte();
         }
         return ret;
@@ -26,7 +26,7 @@ public class Parser {
     }
 
     private int toStringEnd() {
-        while (nextByte() != 0) ;
+        while (nextByte() != 0);
         return cur;
     }
 
