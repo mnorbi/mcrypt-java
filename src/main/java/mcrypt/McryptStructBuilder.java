@@ -1,17 +1,19 @@
 package mcrypt;
 
 public class McryptStructBuilder {
-    int saltIvFlag;
-    String algorithmName;
-    int keyLength;
-    String keyGeneratorName;
+    static final int SALT_FLAG = 0b01000000;
+    static final int INIT_VECTOR_FLAG = 0b10000000;
+    private int saltIvFlag;
+    private String algorithmName;
+    private int keyLength;
+    private String keyGeneratorName;
     private String mode;
     private byte[] salt;
-    private String checksumAlgorithm;
+    private String checksumAlgorithmName;
     private byte[] initVector;
     private byte[] encryptedDataWithChecksum;
 
-    public McryptStructBuilder setSaltIvFlag(byte saltIvFlag) {
+    public McryptStructBuilder setSaltIvFlag(int saltIvFlag) {
         this.saltIvFlag = saltIvFlag;
         return this;
     }
@@ -37,7 +39,7 @@ public class McryptStructBuilder {
     }
 
     public boolean hasSalt() {
-        return ((saltIvFlag & 0b01000000) != 0);
+        return ((saltIvFlag & SALT_FLAG) != 0);
     }
 
     public McryptStructBuilder setSalt(byte[] salt) {
@@ -60,7 +62,7 @@ public class McryptStructBuilder {
             setSalt(parseSalt(parser));
         }
 
-        setChecksumAlgorithm(parser.nextString());
+        setChecksumAlgorithmName(parser.nextString());
 
         if (hasInitVector()) {
             setInitVector(parseInitVector());
@@ -76,7 +78,7 @@ public class McryptStructBuilder {
     }
 
     private boolean hasInitVector() {
-        return (saltIvFlag & 0b10000000) != 0;
+        return (saltIvFlag & INIT_VECTOR_FLAG) != 0;
     }
 
     private void checkHeader(byte[] header) {
@@ -91,8 +93,8 @@ public class McryptStructBuilder {
         return parser.nextByteArray(parser.nextByte() -1);
     }
 
-    public McryptStructBuilder setChecksumAlgorithm(String checksumAlgorithm) {
-        this.checksumAlgorithm = checksumAlgorithm;
+    public McryptStructBuilder setChecksumAlgorithmName(String checksumAlgorithmName) {
+        this.checksumAlgorithmName = checksumAlgorithmName;
         return this;
     }
 
@@ -101,8 +103,9 @@ public class McryptStructBuilder {
         return this;
     }
 
-    public void setEncryptedDataWithChecksum(byte[] encryptedDataWithChecksum) {
+    public McryptStructBuilder setEncryptedDataWithChecksum(byte[] encryptedDataWithChecksum) {
         this.encryptedDataWithChecksum = encryptedDataWithChecksum;
+        return this;
     }
 
     public McryptStruct build() {
@@ -112,7 +115,7 @@ public class McryptStructBuilder {
                 keyGeneratorName,
                 mode,
                 salt,
-                checksumAlgorithm,
+                checksumAlgorithmName,
                 initVector,
                 encryptedDataWithChecksum
         );
