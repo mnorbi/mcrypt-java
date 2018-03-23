@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class McryptStructTest {
     @Test
-    public void testEqualHashCode() {
+    public void testEqualsHashCode() {
         EqualsVerifier
                 .forClass(McryptStruct.class)
                 .verify();
